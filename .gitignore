@@ -1,0 +1,9 @@
+# Configuración local
+config/conexion.php
+
+# Archivos temporales
+*.log
+
+# Sistema
+Thumbs.db
+.DS_Store
