@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <body style="font-family:Arial,sans-serif;color:#1f2937;line-height:1.5">
   <div style="max-width:620px;margin:auto;border:1px solid #dbe3ee;border-radius:10px;padding:28px">
-    <h2 style="color:#0f3d6e">Recuperación de contraseña - CyberData</h2>
+    <h2 style="color:#0f3d6e">Recuperación de contraseña - CyberData Networks</h2>
     <p>Hola {$nombreSeguro},</p>
     <p>Se solicitó restablecer la contraseña de su cuenta.</p>
     <p style="margin:28px 0">
@@ -73,11 +73,11 @@ HTML;
 
                 $enviado = smtp_send(
                     (string) $usuario['email'],
-                    'Recuperación de contraseña - CyberData',
+                    'Recuperación de contraseña - CyberData Networks',
                     $html,
                     $texto
                 );
-
+                
                 if (!$enviado && app_config('app.environment') === 'development') {
                     $enlaceDesarrollo = $url;
                 }
