@@ -1,6 +1,7 @@
 <?php
+require_once __DIR__ . "/../config/bootstrap.php";
 
-define("SESSION_TIMEOUT", 900);
+$sessionTimeout = max(300, (int) app_config("security.session_timeout_seconds", 900));
 
 if (isset($_SESSION["id_usuario"])) {
 
@@ -8,7 +9,7 @@ if (isset($_SESSION["id_usuario"])) {
 
         $inactividad = time() - $_SESSION["ultima_actividad"];
 
-        if ($inactividad >= SESSION_TIMEOUT) {
+        if ($inactividad >= $sessionTimeout) {
 
             $_SESSION = [];
 
@@ -29,7 +30,7 @@ if (isset($_SESSION["id_usuario"])) {
 
             session_destroy();
 
-            header("Location: /CyberData/login.php?estado=timeout");
+            redirect_to("/login.php?estado=timeout");
             exit;
         }
     }
