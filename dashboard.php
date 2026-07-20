@@ -35,24 +35,80 @@ $ultimosIncidentes = consultarFilas($conexion, "SELECT i.id_incidente, c.razon_s
 ?>
 <div class="layout">
 <?php require_once "includes/menu.php"; ?>
+ 
 <main class="contenido">
-<header class="barra-superior"><div class="usuario-barra">Usuario: <strong><?= htmlspecialchars($_SESSION["email"] ?? "Sin email", ENT_QUOTES, "UTF-8") ?></strong></div><div class="permisos-barra">Permisos actuales: <strong><?= htmlspecialchars($rolTexto, ENT_QUOTES, "UTF-8") ?></strong></div></header>
-<section class="topbar"><div><h1><?= $esCliente ? "Dashboard de Cliente" : "Dashboard Analítico" ?></h1><p><?= $esCliente ? "Visualización de incidentes asociados a " . htmlspecialchars($_SESSION["cliente_nombre"] ?? "su empresa", ENT_QUOTES, "UTF-8") . "." : "Indicadores en tiempo real para la gestión de incidentes de ciberseguridad." ?></p></div></section>
+<header class="barra-superior">
+    <div class="usuario-barra">Usuario: <strong><?= htmlspecialchars($_SESSION["email"] ?? "Sin email", ENT_QUOTES, "UTF-8") ?>
+        </strong>
+    </div>
+    <div class="permisos-barra">Permisos actuales: <strong><?= htmlspecialchars($rolTexto, ENT_QUOTES, "UTF-8") ?>
+        </strong>
+    </div>
+    </header>
+<section class="topbar">
+    <div>
+        <h1><?= $esCliente ? "Dashboard de Cliente" : "Dashboard Analítico" ?>
+        </h1>
+        <p><?= $esCliente ? "Visualización de incidentes asociados a " . htmlspecialchars($_SESSION["cliente_nombre"] ?? "su empresa", ENT_QUOTES, "UTF-8") . "." : "Indicadores en tiempo real para la gestión de incidentes de ciberseguridad." ?></p>
+    </div>
+    </section>
 <section class="cards">
 <article class="card"><span>Total incidentes</span><strong><?= $totalIncidentes ?></strong></article>
 <article class="card"><span>Incidentes abiertos</span><strong><?= $incidentesAbiertos ?></strong></article>
-<article class="card alerta"><span>Alta/Crítica</span><strong><?= $altaCritica ?></strong></article>
+<article class="card card-critica"><span>Alta/Crítica</span><strong><?= $altaCritica ?></strong></article>
 <article class="card"><span><?= $esCliente ? "Cliente asociado" : "Clientes activos" ?></span><strong><?= $esCliente ? htmlspecialchars($_SESSION["cliente_nombre"] ?? "—", ENT_QUOTES, "UTF-8") : $totalClientes ?></strong></article>
 </section>
 <section class="grid-analitico grid-graficos">
-<article class="panel panel-grafico"><h2>Incidentes por criticidad</h2><p class="descripcion-grafico">Distribución porcentual de los incidentes visibles.</p><div class="grafico-torta-contenedor"><div id="graficoCriticidad" class="grafico-torta" role="img" aria-label="Gráfico de incidentes por criticidad"><div class="grafico-torta-centro"><strong><?= $totalIncidentes ?></strong><span>Total</span></div></div><div id="leyendaCriticidad" class="leyenda-grafico"></div></div></article>
-<article class="panel panel-grafico"><h2>Incidentes por estado</h2><p class="descripcion-grafico">Cantidad de incidentes según su estado actual.</p><div id="graficoEstado" class="grafico-barras" role="img" aria-label="Gráfico de barras de incidentes por estado"></div></article>
+<article class="panel panel-grafico">
+    <h2>Incidentes por criticidad</h2>
+    <p class="descripcion-grafico">Distribución porcentual de los incidentes visibles.</p>
+    <div class="grafico-torta-contenedor">
+        <div id="graficoCriticidad" class="grafico-torta" role="img" aria-label="Gráfico de incidentes por criticidad">
+            <div class="grafico-torta-centro"><strong><?= $totalIncidentes ?></strong><span>Total</span>
+            </div></div><div id="leyendaCriticidad" class="leyenda-grafico">
+        </div>
+    </div>
+    </article>
+<article class="panel panel-grafico">
+    <h2>Incidentes por estado</h2>
+    <p class="descripcion-grafico">Cantidad de incidentes según su estado actual.</p><div id="graficoEstado" class="grafico-barras" role="img" aria-label="Gráfico de barras de incidentes por estado"></div></article>
 </section>
 <section class="grid-analitico">
-<?php if (!$esCliente): ?><article class="panel"><h2>Top clientes afectados</h2><table class="tabla"><thead><tr><th>Cliente</th><th>Total incidentes</th></tr></thead><tbody><?php foreach ($topClientes as $row): ?><tr><td><?= htmlspecialchars($row["razon_social"], ENT_QUOTES, "UTF-8") ?></td><td><?= (int)$row["total"] ?></td></tr><?php endforeach; ?></tbody></table></article><?php endif; ?>
-<article class="panel"><h2>Últimos incidentes registrados</h2><table class="tabla"><thead><tr><th>ID</th><th>Cliente</th><th>Vector</th><th>Criticidad</th><th>Fecha</th></tr></thead><tbody><?php foreach ($ultimosIncidentes as $row): ?><tr><td><?= (int)$row["id_incidente"] ?></td><td><?= htmlspecialchars($row["razon_social"], ENT_QUOTES, "UTF-8") ?></td><td><?= htmlspecialchars($row["nombre_vector"], ENT_QUOTES, "UTF-8") ?></td><td><?= htmlspecialchars($row["criticidad"], ENT_QUOTES, "UTF-8") ?></td><td><?= htmlspecialchars($row["fecha_registro"], ENT_QUOTES, "UTF-8") ?></td></tr><?php endforeach; ?><?php if (empty($ultimosIncidentes)): ?><tr><td colspan="5">No existen incidentes registrados.</td></tr><?php endif; ?></tbody></table></article>
+<?php if (!$esCliente): ?><article class="panel"><h2>Top clientes afectados</h2>
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Total incidentes</th>
+            </tr>
+        </thead>
+        <tbody><?php foreach ($topClientes as $row): ?><tr><td><?= htmlspecialchars($row["razon_social"], ENT_QUOTES, "UTF-8") ?></td><td><?= (int)$row["total"] ?></td>
+            </tr><?php endforeach; ?></tbody>
+    </table>
+    </article><?php endif; ?>
+<article class="panel">
+    <h2>Últimos incidentes registrados</h2>
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Vector</th>
+                <th>Criticidad</th>
+                <th>Fecha</th>
+            </tr></thead>
+        <tbody><?php foreach ($ultimosIncidentes as $row): ?><tr><td><?= (int)$row["id_incidente"] ?></td>
+            <td><?= htmlspecialchars($row["razon_social"], ENT_QUOTES, "UTF-8") ?></td>
+            <td><?= htmlspecialchars($row["nombre_vector"], ENT_QUOTES, "UTF-8") ?></td>
+            <td><?= htmlspecialchars($row["criticidad"], ENT_QUOTES, "UTF-8") ?></td>
+            <td><?= htmlspecialchars($row["fecha_registro"], ENT_QUOTES, "UTF-8") ?></td>
+            </tr><?php endforeach; ?><?php if (empty($ultimosIncidentes)): ?><tr>
+            <td colspan="5">No existen incidentes registrados.</td></tr><?php endif; ?></tbody>
+    </table>
+    </article>
 </section>
-</main></div>
+</main>
+</div>
 <script>window.datosDashboard={criticidad:<?= json_encode($porCriticidad, JSON_UNESCAPED_UNICODE|JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) ?>,estado:<?= json_encode($porEstado, JSON_UNESCAPED_UNICODE|JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT) ?>};</script>
-<script src="/CyberData/js/dashboard-graficos.js"></script>
+<script src="<?= e(app_url('/js/dashboard-graficos.js')) ?>"></script>
 <?php require_once "includes/footer.php"; ?>
