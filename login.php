@@ -73,11 +73,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <title>CyberData - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/estilos.css?v=15">
+   
 </head>
 <body class="auth-body">
 <main class="auth-card">
-    <h1>CyberData</h1>
+    <h1 class="titulo-login">CyberData Networks</h1>
+       <p class="descripcion-app">
+        Plataforma Web de Analitica y Gestion de Incidentes Ciberseguridad.<br>
+    </p>
     <?php if (($_GET["estado"] ?? "") === "timeout"): ?>
         <p style="color:#d97706; font-weight:bold;">Su sesión expiró por 15 minutos de inactividad. Inicie sesión nuevamente.</p>
     <?php endif; ?>
@@ -86,13 +90,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php endif; ?>
     <form method="POST" class="auth-form">
         <?= csrf_input(); ?>
-        <label for="email">Correo:</label><br>
-        <input type="email" id="email" name="email" value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>" autocomplete="email" required><br><br>
-        <label for="password">Contraseña:</label><br>
-        <input type="password" id="password" name="password" autocomplete="current-password" required><br><br>
+        <label for="email">Correo:</label>
+        <input type="email" id="email" name="email" value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?>" autocomplete="email" required>
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required>
         <button type="submit">Ingresar</button>
     </form>
     <p class="auth-links"><a href="recuperar_password.php">¿Olvidó su contraseña?</a></p>
+    <footer>
+
+    <a href="politica_privacidad.php">
+        Política de privacidad
+    </a>
+    |
+    <a href="contacto.php">
+        Contacto
+    </a>
+            <p>
+            CyberData © 2026
+           </p>
+</footer>
 </main>
 </body>
 </html>
